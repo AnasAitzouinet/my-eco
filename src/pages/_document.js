@@ -1,4 +1,5 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document'
+import Script from 'next/script'
 
 class MyDocument extends Document {
   render() {
@@ -6,7 +7,7 @@ class MyDocument extends Document {
       <Html lang="en">
         <Head>
          
-          <script src="https://cdn.tailwindcss.com"></script>
+          <Script src="https://cdn.tailwindcss.com"></Script>
 
         </Head>
         <body className="bg-gray-100">

@@ -14,7 +14,7 @@ import { StarIcon } from '@heroicons/react/20/solid'
 import { Header } from '../../../../component/Header'
 import Footer from '../../../../component/Footer'
 import { server } from '../../../../config'
-import { products } from "../../data";
+import  data  from '../../../../datas.json'
 import Link from 'next/link'
 import Products from '../../data'
 import { Carte } from '../../../../component/Carte'
@@ -242,13 +242,35 @@ const relatedProducts = [
   // More products...
 ]
 
+// export const getStaticProps = async (context) => {
+//   try {
+//     const res = await fetch(`${server}/api/Products/${context.params.id}`);
+//     if (!res.ok) {
+//       throw new Error("Failed to fetch product");
+//     }
+    
+//     const product = await res.json();
+//     return {
+//       props: {
+//         product,
+//       },
+//     };
+//   } catch (error) {
+//     return {
+//       props: {
+//         error: error.message,
+//       },
+//     };
+//   }
+// };
+
 export const getStaticProps = async (context) => {
   try {
-    const res = await fetch(`${server}/api/Products/${context.params.id}`);
+    const id = context.params.id;
+    const res = await fetch(`${server}/api/Products/${id}`);
     if (!res.ok) {
-      throw new Error("Failed to fetch product");
+      throw new Error(`Failed to fetch product with ID ${id}`);
     }
-    
     const product = await res.json();
     return {
       props: {
@@ -256,6 +278,7 @@ export const getStaticProps = async (context) => {
       },
     };
   } catch (error) {
+    console.error(error);
     return {
       props: {
         error: error.message,
@@ -264,10 +287,16 @@ export const getStaticProps = async (context) => {
   }
 };
 
+
 export const getStaticPaths = async () => {
+  if (process.env.SKIP_BUILD_STATIC_GENERATION) {
+    return {
+      paths: [],
+      fallback: 'blocking',
+    }
+  }
   const res = await fetch(`${server}/api/Products/`);
   const products = await res.json();
-
   const ids = products.map((product) => product.id);
   const paths = ids.map((id) => ({ params: { id: id.toString() } }));
 
@@ -296,6 +325,7 @@ export default function Product({ product }) {
   
   const addToCart = (productId) => {
     event.preventDefault();
+    const products = data[0].products;
     const productToAdd = products.find((product) => product.id === productId);
     const existingCartItem = cartItems.find((item) => item.id === productId);
   

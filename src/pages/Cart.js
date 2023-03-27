@@ -1,11 +1,12 @@
 
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect } from 'react'
 import { Dialog, Popover, Tab, Transition } from '@headlessui/react'
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, UserIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { CheckIcon, ClockIcon } from '@heroicons/react/20/solid'
 import Link from 'next/link'
 import Footer from '../../component/Footer'
 import { Carte } from '../../component/Carte'
+import React, { useState } from 'react';
 
 const navigation = {
   categories: [
@@ -192,30 +193,7 @@ const navigation = {
     { name: 'Stores', href: '#' },
   ],
 }
-const products = [
-  {
-    id: 1,
-    name: 'Nomad Tumbler',
-    href: '#',
-    price: '$35.00',
-    color: 'White',
-    inStock: true,
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-01-product-03.jpg',
-    imageAlt: 'Insulated bottle with white base and black snap lid.',
-  },
-  {
-    id: 2,
-    name: 'Basic Tee',
-    href: '#',
-    price: '$32.00',
-    color: 'Sienna',
-    inStock: true,
-    size: 'Large',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-01-product-01.jpg',
-    imageAlt: "Front of men's Basic Tee in sienna.",
-  },
-  // More products...
-]
+
 const policies = [
   {
     name: 'Free returns',
@@ -247,6 +225,49 @@ function classNames(...classes) {
 
 export default function CartePage() {
   const [open, setOpen] = useState(false)
+  const [products, Setproducts] = useState([]);
+  const [subtotal, setSubtotal] = useState(0);
+
+  useEffect(() => {
+    const cart = JSON.parse(localStorage.getItem('cart'));
+    if (cart) {
+      Setproducts(cart);
+    }
+  }, []);
+
+  useEffect(() => {
+    const cart = JSON.parse(localStorage.getItem('cart'));
+    if (cart) {
+      Setproducts(cart);
+    }
+  }, []);
+  
+  useEffect(() => {
+    const newSubtotal = products.reduce(
+      (acc, item) => acc + item.price * item.quantity,
+      0
+    );
+    setSubtotal(newSubtotal);
+  }, [products]);
+  
+  const handleQuantityChange = (e, productId) => {
+    const newQuantity = parseInt(e.target.value);
+    Setproducts(prevProducts => {
+      const updatedProducts = prevProducts.map(product => {
+        if (product.id === productId) {
+          product.quantity = newQuantity;
+        }
+        return product;
+      });
+      return updatedProducts;
+    });
+  };
+  
+  
+  
+  
+  
+  
 
   return (
     <div className="bg-white">
@@ -377,7 +398,7 @@ export default function CartePage() {
                 </div>
 
                 <div className="border-t border-gray-200 py-6 px-4">
-                
+
                 </div>
               </Dialog.Panel>
             </Transition.Child>
@@ -536,13 +557,13 @@ export default function CartePage() {
               </Link>
 
               <div className="flex flex-1 items-center justify-end">
-                
+
 
                 {/* Search */}
-                
+
 
                 {/* Account */}
-                
+
 
                 {/* Cart */}
                 {/* <div className="ml-4 flow-root lg:ml-6">
@@ -555,7 +576,7 @@ export default function CartePage() {
                     <span className="sr-only">items in cart, view bag</span>
                   </a>
                 </div> */}
-                <Carte/>
+                <Carte />
               </div>
             </div>
           </div>
@@ -589,15 +610,15 @@ export default function CartePage() {
                           <div className="flex justify-between sm:grid sm:grid-cols-2">
                             <div className="pr-6">
                               <h3 className="text-sm">
-                                <a href={product.href} className="font-medium text-gray-700 hover:text-gray-800">
+                                <Link href={`/Product/${product.id}`} className="font-medium text-gray-700 hover:text-gray-800">
                                   {product.name}
-                                </a>
+                                </Link>
                               </h3>
                               <p className="mt-1 text-sm text-gray-500">{product.color}</p>
                               {product.size ? <p className="mt-1 text-sm text-gray-500">{product.size}</p> : null}
                             </div>
 
-                            <p className="text-right text-sm font-medium text-gray-900">{product.price}</p>
+                            <p className="text-right text-sm font-medium text-gray-900">${product.price}</p>
                           </div>
 
                           <div className="mt-4 flex items-center sm:absolute sm:top-0 sm:left-1/2 sm:mt-0 sm:block">
@@ -607,6 +628,10 @@ export default function CartePage() {
                             <select
                               id={`quantity-${productIdx}`}
                               name={`quantity-${productIdx}`}
+                              value={product.quantity}
+                              onChange={(e) => handleQuantityChange(e, product.id)}
+
+
                               className="block max-w-full rounded-md border border-gray-300 py-1.5 text-left text-base font-medium leading-5 text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
                             >
                               <option value={1}>1</option>
@@ -666,7 +691,7 @@ export default function CartePage() {
                       </div>
                       <div className="flex items-center justify-between py-4">
                         <dt className="text-base font-medium text-gray-900">Order total</dt>
-                        <dd className="text-base font-medium text-gray-900">$112.32</dd>
+                        <dd className="text-base font-medium text-gray-900">${subtotal}</dd>
                       </div>
                     </dl>
                   </div>
@@ -723,7 +748,7 @@ export default function CartePage() {
         </section>
       </main>
 
-      <Footer/>
+      <Footer />
     </div>
   )
 }

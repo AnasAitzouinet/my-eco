@@ -1,5 +1,5 @@
 
-import { Fragment, useState } from 'react'
+import { Fragment, useState, useEffect } from 'react'
 import { Dialog, Popover, RadioGroup, Tab, Transition } from '@headlessui/react'
 import {
   Bars3Icon,
@@ -21,241 +21,191 @@ import { Carte } from '../../../../component/Carte'
 
 
 const navigation = {
-    categories: [
-      {
-        id: 'women',
-        name: 'Women',
-        featured: [
-          {
-            name: 'New Arrivals',
-            href: '#',
-            imageSrc: 'https://tailwindui.com/img/ecommerce-images/mega-menu-category-01.jpg',
-            imageAlt: 'Models sitting back to back, wearing Basic Tee in black and bone.',
-          },
-          {
-            name: 'Basic Tees',
-            href: '#',
-            imageSrc: 'https://tailwindui.com/img/ecommerce-images/mega-menu-category-02.jpg',
-            imageAlt: 'Close up of Basic Tee fall bundle with off-white, ochre, olive, and black tees.',
-          },
-          {
-            name: 'Accessories',
-            href: '#',
-            imageSrc: 'https://tailwindui.com/img/ecommerce-images/mega-menu-category-03.jpg',
-            imageAlt: 'Model wearing minimalist watch with black wristband and white watch face.',
-          },
-        ],
-        sections: [
-          [
-            {
-              id: 'shoes',
-              name: 'Shoes & Accessories',
-              items: [
-                { name: 'Sneakers', href: '#' },
-                { name: 'Boots', href: '#' },
-                { name: 'Flats', href: '#' },
-                { name: 'Sandals', href: '#' },
-                { name: 'Heels', href: '#' },
-                { name: 'Socks', href: '#' },
-              ],
-            },
-            {
-              id: 'collection',
-              name: 'Shop Collection',
-              items: [
-                { name: 'Everything', href: '#' },
-                { name: 'Core', href: '#' },
-                { name: 'New Arrivals', href: '#' },
-                { name: 'Sale', href: '#' },
-                { name: 'Accessories', href: '#' },
-              ],
-            },
-          ],
-          [
-            {
-              id: 'clothing',
-              name: 'All Clothing',
-              items: [
-                { name: 'Basic Tees', href: '#' },
-                { name: 'Artwork Tees', href: '#' },
-                { name: 'Tops', href: '#' },
-                { name: 'Bottoms', href: '#' },
-                { name: 'Swimwear', href: '#' },
-                { name: 'Underwear', href: '#' },
-              ],
-            },
-            {
-              id: 'accessories',
-              name: 'All Accessories',
-              items: [
-                { name: 'Watches', href: '#' },
-                { name: 'Wallets', href: '#' },
-                { name: 'Bags', href: '#' },
-                { name: 'Sunglasses', href: '#' },
-                { name: 'Hats', href: '#' },
-                { name: 'Belts', href: '#' },
-              ],
-            },
-          ],
-          [
-            {
-              id: 'brands',
-              name: 'Brands',
-              items: [
-                { name: 'Full Nelson', href: '#' },
-                { name: 'My Way', href: '#' },
-                { name: 'Re-Arranged', href: '#' },
-                { name: 'Counterfeit', href: '#' },
-                { name: 'Significant Other', href: '#' },
-              ],
-            },
-          ],
-        ],
-      },
-      {
-        id: 'men',
-        name: 'Men',
-        featured: [
-          {
-            name: 'Accessories',
-            href: '#',
-            imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-03-category-01.jpg',
-            imageAlt:
-              'Wooden shelf with gray and olive drab green baseball caps, next to wooden clothes hanger with sweaters.',
-          },
-          {
-            name: 'New Arrivals',
-            href: '#',
-            imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-04-detail-product-shot-01.jpg',
-            imageAlt: 'Drawstring top with elastic loop closure and textured interior padding.',
-          },
-          {
-            name: 'Artwork Tees',
-            href: '#',
-            imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-02-image-card-06.jpg',
-            imageAlt:
-              'Three shirts in gray, white, and blue arranged on table with same line drawing of hands and shapes overlapping on front of shirt.',
-          },
-        ],
-        sections: [
-          [
-            {
-              id: 'shoes',
-              name: 'Shoes & Accessories',
-              items: [
-                { name: 'Sneakers', href: '#' },
-                { name: 'Boots', href: '#' },
-                { name: 'Sandals', href: '#' },
-                { name: 'Socks', href: '#' },
-              ],
-            },
-            {
-              id: 'collection',
-              name: 'Shop Collection',
-              items: [
-                { name: 'Everything', href: '#' },
-                { name: 'Core', href: '#' },
-                { name: 'New Arrivals', href: '#' },
-                { name: 'Sale', href: '#' },
-              ],
-            },
-          ],
-          [
-            {
-              id: 'clothing',
-              name: 'All Clothing',
-              items: [
-                { name: 'Basic Tees', href: '#' },
-                { name: 'Artwork Tees', href: '#' },
-                { name: 'Pants', href: '#' },
-                { name: 'Hoodies', href: '#' },
-                { name: 'Swimsuits', href: '#' },
-              ],
-            },
-            {
-              id: 'accessories',
-              name: 'All Accessories',
-              items: [
-                { name: 'Watches', href: '#' },
-                { name: 'Wallets', href: '#' },
-                { name: 'Bags', href: '#' },
-                { name: 'Sunglasses', href: '#' },
-                { name: 'Hats', href: '#' },
-                { name: 'Belts', href: '#' },
-              ],
-            },
-          ],
-          [
-            {
-              id: 'brands',
-              name: 'Brands',
-              items: [
-                { name: 'Re-Arranged', href: '#' },
-                { name: 'Counterfeit', href: '#' },
-                { name: 'Full Nelson', href: '#' },
-                { name: 'My Way', href: '#' },
-              ],
-            },
-          ],
-        ],
-      },
-    ],
-    pages: [
-      { name: 'Company', href: '#' },
-      { name: 'Stores', href: '#' },
-    ],
-  }
-const productss = {
-  name: 'Basic Tee',
-  price: '$35',
-  href: '#',
-  breadcrumbs: [
-    { id: 1, name: 'Women', href: '#' },
-    { id: 2, name: 'Clothing', href: '#' },
-  ],
-  images: [
+  categories: [
     {
-      id: 1,
-      imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-featured-product-shot.jpg',
-      imageAlt: "Back of women's Basic Tee in black.",
-      primary: true,
+      id: 'women',
+      name: 'Women',
+      featured: [
+        {
+          name: 'New Arrivals',
+          href: '#',
+          imageSrc: 'https://tailwindui.com/img/ecommerce-images/mega-menu-category-01.jpg',
+          imageAlt: 'Models sitting back to back, wearing Basic Tee in black and bone.',
+        },
+        {
+          name: 'Basic Tees',
+          href: '#',
+          imageSrc: 'https://tailwindui.com/img/ecommerce-images/mega-menu-category-02.jpg',
+          imageAlt: 'Close up of Basic Tee fall bundle with off-white, ochre, olive, and black tees.',
+        },
+        {
+          name: 'Accessories',
+          href: '#',
+          imageSrc: 'https://tailwindui.com/img/ecommerce-images/mega-menu-category-03.jpg',
+          imageAlt: 'Model wearing minimalist watch with black wristband and white watch face.',
+        },
+      ],
+      sections: [
+        [
+          {
+            id: 'shoes',
+            name: 'Shoes & Accessories',
+            items: [
+              { name: 'Sneakers', href: '#' },
+              { name: 'Boots', href: '#' },
+              { name: 'Flats', href: '#' },
+              { name: 'Sandals', href: '#' },
+              { name: 'Heels', href: '#' },
+              { name: 'Socks', href: '#' },
+            ],
+          },
+          {
+            id: 'collection',
+            name: 'Shop Collection',
+            items: [
+              { name: 'Everything', href: '#' },
+              { name: 'Core', href: '#' },
+              { name: 'New Arrivals', href: '#' },
+              { name: 'Sale', href: '#' },
+              { name: 'Accessories', href: '#' },
+            ],
+          },
+        ],
+        [
+          {
+            id: 'clothing',
+            name: 'All Clothing',
+            items: [
+              { name: 'Basic Tees', href: '#' },
+              { name: 'Artwork Tees', href: '#' },
+              { name: 'Tops', href: '#' },
+              { name: 'Bottoms', href: '#' },
+              { name: 'Swimwear', href: '#' },
+              { name: 'Underwear', href: '#' },
+            ],
+          },
+          {
+            id: 'accessories',
+            name: 'All Accessories',
+            items: [
+              { name: 'Watches', href: '#' },
+              { name: 'Wallets', href: '#' },
+              { name: 'Bags', href: '#' },
+              { name: 'Sunglasses', href: '#' },
+              { name: 'Hats', href: '#' },
+              { name: 'Belts', href: '#' },
+            ],
+          },
+        ],
+        [
+          {
+            id: 'brands',
+            name: 'Brands',
+            items: [
+              { name: 'Full Nelson', href: '#' },
+              { name: 'My Way', href: '#' },
+              { name: 'Re-Arranged', href: '#' },
+              { name: 'Counterfeit', href: '#' },
+              { name: 'Significant Other', href: '#' },
+            ],
+          },
+        ],
+      ],
     },
     {
-      id: 2,
-      imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-product-shot-01.jpg',
-      imageAlt: "Side profile of women's Basic Tee in black.",
-      primary: false,
+      id: 'men',
+      name: 'Men',
+      featured: [
+        {
+          name: 'Accessories',
+          href: '#',
+          imageSrc: 'https://tailwindui.com/img/ecommerce-images/home-page-03-category-01.jpg',
+          imageAlt:
+            'Wooden shelf with gray and olive drab green baseball caps, next to wooden clothes hanger with sweaters.',
+        },
+        {
+          name: 'New Arrivals',
+          href: '#',
+          imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-04-detail-product-shot-01.jpg',
+          imageAlt: 'Drawstring top with elastic loop closure and textured interior padding.',
+        },
+        {
+          name: 'Artwork Tees',
+          href: '#',
+          imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-02-image-card-06.jpg',
+          imageAlt:
+            'Three shirts in gray, white, and blue arranged on table with same line drawing of hands and shapes overlapping on front of shirt.',
+        },
+      ],
+      sections: [
+        [
+          {
+            id: 'shoes',
+            name: 'Shoes & Accessories',
+            items: [
+              { name: 'Sneakers', href: '#' },
+              { name: 'Boots', href: '#' },
+              { name: 'Sandals', href: '#' },
+              { name: 'Socks', href: '#' },
+            ],
+          },
+          {
+            id: 'collection',
+            name: 'Shop Collection',
+            items: [
+              { name: 'Everything', href: '#' },
+              { name: 'Core', href: '#' },
+              { name: 'New Arrivals', href: '#' },
+              { name: 'Sale', href: '#' },
+            ],
+          },
+        ],
+        [
+          {
+            id: 'clothing',
+            name: 'All Clothing',
+            items: [
+              { name: 'Basic Tees', href: '#' },
+              { name: 'Artwork Tees', href: '#' },
+              { name: 'Pants', href: '#' },
+              { name: 'Hoodies', href: '#' },
+              { name: 'Swimsuits', href: '#' },
+            ],
+          },
+          {
+            id: 'accessories',
+            name: 'All Accessories',
+            items: [
+              { name: 'Watches', href: '#' },
+              { name: 'Wallets', href: '#' },
+              { name: 'Bags', href: '#' },
+              { name: 'Sunglasses', href: '#' },
+              { name: 'Hats', href: '#' },
+              { name: 'Belts', href: '#' },
+            ],
+          },
+        ],
+        [
+          {
+            id: 'brands',
+            name: 'Brands',
+            items: [
+              { name: 'Re-Arranged', href: '#' },
+              { name: 'Counterfeit', href: '#' },
+              { name: 'Full Nelson', href: '#' },
+              { name: 'My Way', href: '#' },
+            ],
+          },
+        ],
+      ],
     },
-    {
-      id: 3,
-      imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-product-shot-02.jpg',
-      imageAlt: "Front of women's Basic Tee in black.",
-      primary: false,
-    },
   ],
-  colors: [
-    { name: 'Black', bgColor: 'bg-gray-900', selectedColor: 'ring-gray-900' },
-    { name: 'Heather Grey', bgColor: 'bg-gray-400', selectedColor: 'ring-gray-400' },
-  ],
-  sizes: [
-    { name: 'Libra', inStock: true },
-    { name: 'Aries', inStock: true },
-    { name: 'S', inStock: true },
-    { name: 'M', inStock: true },
-    { name: 'L', inStock: true },
-    { name: 'XL', inStock: false },
-  ],
-  description: `
-    <p>The Basic tee is an honest new take on a classic. The tee uses super soft, pre-shrunk cotton for true comfort and a dependable fit. They are hand cut and sewn locally, with a special dye technique that gives each tee it's own look.</p>
-    <p>Looking to stock your closet? The Basic tee also comes in a 3-pack or 5-pack at a bundle discount.</p>
-  `,
-  details: [
-    'Only the best materials',
-    'Ethically and locally made',
-    'Pre-washed and pre-shrunk',
-    'Machine wash cold with similar colors',
+  pages: [
+    { name: 'Company', href: '#' },
+    { name: 'Stores', href: '#' },
   ],
 }
+
 const policies = [
   { name: 'International delivery', icon: GlobeAmericasIcon, description: 'Get your order in 2 years' },
   { name: 'Loyalty rewards', icon: CurrencyDollarIcon, description: "Don't look at other tees" },
@@ -293,62 +243,94 @@ const relatedProducts = [
 ]
 
 export const getStaticProps = async (context) => {
-    const res = await fetch(`${server}/api/Products/${context.params.id}`)
-  
-    const product = await res.json()
-  
+  try {
+    const res = await fetch(`${server}/api/Products/${context.params.id}`);
+    if (!res.ok) {
+      throw new Error("Failed to fetch product");
+    }
+    
+    const product = await res.json();
     return {
       props: {
         product,
       },
-    }
-  }
-
-  export const getStaticPaths = async () => {
-    const res = await fetch(`${server}/api/Products/`)
-  
-    const product = await res.json()
-  
-    const ids = products.map((product) => product.id)
-    const paths = ids.map((id) => ({ params: { id: id.toString() } }))
-  
+    };
+  } catch (error) {
     return {
-      paths,
-      fallback: false,
-    }
+      props: {
+        error: error.message,
+      },
+    };
   }
+};
+
+export const getStaticPaths = async () => {
+  const res = await fetch(`${server}/api/Products/`);
+  const products = await res.json();
+
+  const ids = products.map((product) => product.id);
+  const paths = ids.map((id) => ({ params: { id: id.toString() } }));
+
+  return {
+    paths,
+    fallback: false,
+  };
+};
+
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Product({product}) {
-  const [cartItems , setCartItems ] = useState([])
+export default function Product({ product }) {
+  
+  const [cartItems, setCartItems] = useState([]);
 
-  function addToCart(productId){
-    const productToAdd = products.find((product) => product.id === productId)
-    if (!productToAdd){
-      console.error(`Product with ID ${productId} not found.`)
-      return;
+  useEffect(() => {
+    const CartStore = JSON.parse(localStorage.getItem('cart') || '[]');
+    setCartItems(CartStore);
+    if (!localStorage.getItem('cart')) {
+      localStorage.setItem('cart', JSON.stringify(CartStore));
     }
-    const existingCartItem = cartItems.find((item)=> item.id === productId)
+  }, []);
+  
+  const addToCart = (productId) => {
+    event.preventDefault();
+    const productToAdd = products.find((product) => product.id === productId);
+    const existingCartItem = cartItems.find((item) => item.id === productId);
+  
     if (existingCartItem) {
-      const updatedCartItems = cartItems.map((item) =>
-        item.id === productId ? { ...item, quantity: item.quantity + 1 } : item
+      setCartItems((cartItems) =>
+        cartItems.map((item) =>
+          item.id === productId ? {...item, quantity: item.quantity + 1} : item
+        )
       );
-      setCartItems(updatedCartItems);
-      localStorage.setItem('cart', JSON.stringify(updatedCartItems));
     } else {
-      const newCartItem = { ...productToAdd, quantity: 1 };
-      const updatedCartItems = [...cartItems, newCartItem];
-      setCartItems(updatedCartItems);
-      localStorage.setItem('cart', JSON.stringify(updatedCartItems));
+      setCartItems((cartItems) => [...cartItems, {...productToAdd, quantity: 1}]);
     }
-  }
+  
+    setCartItems((cartItems) => {
+      localStorage.setItem('cart', JSON.stringify(cartItems));
+      return cartItems;
+    });
+  };
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
 
   const [open, setOpen] = useState(false)
-//   const [selectedColor, setSelectedColor] = useState(product.colors[0])
-//   const [selectedSize, setSelectedSize] = useState(product.sizes[2])
+  //   const [selectedColor, setSelectedColor] = useState(product.colors[0])
+  //   const [selectedSize, setSelectedSize] = useState(product.sizes[2])
 
   return (
     <div className="bg-white">
@@ -479,7 +461,7 @@ export default function Product({product}) {
                 </div>
 
                 <div className="border-t border-gray-200 py-6 px-4">
-                
+
                 </div>
               </Dialog.Panel>
             </Transition.Child>
@@ -638,13 +620,13 @@ export default function Product({product}) {
               </Link>
 
               <div className="flex flex-1 items-center justify-end">
-                
+
 
                 {/* Search */}
-                
+
 
                 {/* Account */}
-                
+
 
                 {/* Cart */}
                 {/* <div className="ml-4 flow-root lg:ml-6">
@@ -657,7 +639,7 @@ export default function Product({product}) {
                     <span className="sr-only">items in cart, view bag</span>
                   </a>
                 </div> */}
-                <Carte/>
+                <Carte />
               </div>
             </div>
           </div>
@@ -708,20 +690,19 @@ export default function Product({product}) {
             <h2 className="sr-only">Images</h2>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-3 lg:gap-8">
-                <img
-                  key={product.id}
-                  src={product.imageSrc}
-                  alt={"d"}
-                  className={classNames(
-                    product.imageSrc ? 'lg:col-span-2 lg:row-span-2' : 'hidden lg:block',
-                    'rounded-lg'
-                  )}
-                />
+              <img
+                key={product.id}
+                src={product.imageSrc}
+                alt="d"
+                className={classNames(
+                  product.imageSrc ? 'lg:col-span-2 lg:row-span-2' : 'hidden lg:block',
+                  'rounded-lg'
+                )}
+              />
             </div>
           </div>
 
           <div className="mt-8 lg:col-span-5">
-            <form>
               {/* Color picker */}
               <div>
                 <h2 className="text-sm font-medium text-gray-900">Color</h2>
@@ -800,7 +781,6 @@ export default function Product({product}) {
               >
                 Add to cart
               </button>
-            </form>
 
             {/* Product details */}
             <div className="mt-10">
@@ -817,7 +797,7 @@ export default function Product({product}) {
 
               <div className="prose prose-sm mt-4 text-gray-500">
                 <ul role="list">
-                    {/* <li key={}>{}</li> */}
+                  {/* <li key={}>{}</li> */}
                 </ul>
               </div>
             </div>
@@ -930,7 +910,7 @@ export default function Product({product}) {
         </section>
       </main>
 
-      <Footer/>
+      <Footer />
 
     </div>
   )

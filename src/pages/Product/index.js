@@ -11,13 +11,9 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { StarIcon } from '@heroicons/react/20/solid'
-import { Header } from '../../../../component/Header'
-import Footer from '../../../../component/Footer'
-import { server } from '../../../../config'
-import  data  from '../../../../datas.json'
+import Footer from '../../../component/Footer'
 import Link from 'next/link'
-import Products from '../../data'
-import { Carte } from '../../../../component/Carte'
+import { Carte } from '../../../component/Carte'
 
 
 const navigation = {
@@ -242,6 +238,57 @@ const relatedProducts = [
   // More products...
 ]
 
+const product = {
+  name: 'Basic Tee',
+  price: '$35',
+  href: '#',
+  breadcrumbs: [
+    { id: 1, name: 'Women', href: '#' },
+    { id: 2, name: 'Clothing', href: '#' },
+  ],
+  images: [
+    {
+      id: 1,
+      imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-featured-product-shot.jpg',
+      imageAlt: "Back of women's Basic Tee in black.",
+      primary: true,
+    },
+    {
+      id: 2,
+      imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-product-shot-01.jpg',
+      imageAlt: "Side profile of women's Basic Tee in black.",
+      primary: false,
+    },
+    {
+      id: 3,
+      imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-product-shot-02.jpg',
+      imageAlt: "Front of women's Basic Tee in black.",
+      primary: false,
+    },
+  ],
+  colors: [
+    { name: 'Black', bgColor: 'bg-gray-900', selectedColor: 'ring-gray-900' },
+    { name: 'Heather Grey', bgColor: 'bg-gray-400', selectedColor: 'ring-gray-400' },
+  ],
+  sizes: [
+    { name: 'XXS', inStock: true },
+    { name: 'XS', inStock: true },
+    { name: 'S', inStock: true },
+    { name: 'M', inStock: true },
+    { name: 'L', inStock: true },
+    { name: 'XL', inStock: false },
+  ],
+  description: `
+    <p>The Basic tee is an honest new take on a classic. The tee uses super soft, pre-shrunk cotton for true comfort and a dependable fit. They are hand cut and sewn locally, with a special dye technique that gives each tee it's own look.</p>
+    <p>Looking to stock your closet? The Basic tee also comes in a 3-pack or 5-pack at a bundle discount.</p>
+  `,
+  details: [
+    'Only the best materials',
+    'Ethically and locally made',
+    'Pre-washed and pre-shrunk',
+    'Machine wash cold with similar colors',
+  ],
+}
 // export const getStaticProps = async (context) => {
 //   try {
 //     const res = await fetch(`${server}/api/Products/${context.params.id}`);
@@ -264,54 +311,54 @@ const relatedProducts = [
 //   }
 // };
 
-export const getStaticProps = async (context) => {
-  try {
-    const id = context.params.id;
-    const res = await fetch(`${server}/api/Products/${id}`);
-    if (!res.ok) {
-      throw new Error(`Failed to fetch product with ID ${id}`);
-    }
-    const product = await res.json();
-    return {
-      props: {
-        product,
-      },
-    };
-  } catch (error) {
-    console.error(error);
-    return {
-      props: {
-        error: error.message,
-      },
-    };
-  }
-};
+// export const getStaticProps = async (context) => {
+//   try {
+//     const id = context.params.id;
+//     const res = await fetch(`${server}/api/Products/${id}`);
+//     if (!res.ok) {
+//       throw new Error(`Failed to fetch product with ID ${id}`);
+//     }
+//     const product = await res.json();
+//     return {
+//       props: {
+//         product,
+//       },
+//     };
+//   } catch (error) {
+//     console.error(error);
+//     return {
+//       props: {
+//         error: error.message,
+//       },
+//     };
+//   }
+// };
 
 
-export const getStaticPaths = async () => {
-  if (process.env.SKIP_BUILD_STATIC_GENERATION) {
-    return {
-      paths: [],
-      fallback: 'blocking',
-    }
-  }
-  const res = await fetch(`${server}/api/Products/`);
-  const products = await res.json();
-  const ids = products.map((product) => product.id);
-  const paths = ids.map((id) => ({ params: { id: id.toString() } }));
+// export const getStaticPaths = async () => {
+//   if (process.env.SKIP_BUILD_STATIC_GENERATION) {
+//     return {
+//       paths: [],
+//       fallback: 'blocking',
+//     }
+//   }
+//   const res = await fetch(`${server}/api/Products/`);
+//   const products = await res.json();
+//   const ids = products.map((product) => product.id);
+//   const paths = ids.map((id) => ({ params: { id: id.toString() } }));
 
-  return {
-    paths,
-    fallback: false,
-  };
-};
+//   return {
+//     paths,
+//     fallback: false,
+//   };
+// };
 
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Product({ product }) {
+export default function Product() {
   
   const [cartItems, setCartItems] = useState([]);
 
@@ -345,22 +392,10 @@ export default function Product({ product }) {
     });
   };
   
-  
-  
-
-
-
-
-
-
-
-
-
-
 
   const [open, setOpen] = useState(false)
-  //   const [selectedColor, setSelectedColor] = useState(product.colors[0])
-  //   const [selectedSize, setSelectedSize] = useState(product.sizes[2])
+    const [selectedColor, setSelectedColor] = useState(product.colors[0])
+    const [selectedSize, setSelectedSize] = useState(product.sizes[2])
 
   return (
     <div className="bg-white">
@@ -720,15 +755,17 @@ export default function Product({ product }) {
             <h2 className="sr-only">Images</h2>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-3 lg:gap-8">
-              <img
-                key={product.id}
-                src={product.imageSrc}
-                alt="d"
-                className={classNames(
-                  product.imageSrc ? 'lg:col-span-2 lg:row-span-2' : 'hidden lg:block',
-                  'rounded-lg'
-                )}
-              />
+              {product.images.map((image) => (
+                <img
+                  key={image.id}
+                  src={image.imageSrc}
+                  alt={image.imageAlt}
+                  className={classNames(
+                    image.primary ? 'lg:col-span-2 lg:row-span-2' : 'hidden lg:block',
+                    'rounded-lg'
+                  )}
+                />
+              ))}
             </div>
           </div>
 
@@ -737,7 +774,7 @@ export default function Product({ product }) {
               <div>
                 <h2 className="text-sm font-medium text-gray-900">Color</h2>
 
-                {/* <RadioGroup value={selectedColor} onChange={setSelectedColor} className="mt-2">
+                 <RadioGroup value={selectedColor} onChange={setSelectedColor} className="mt-2">
                   <RadioGroup.Label className="sr-only"> Choose a color </RadioGroup.Label>
                   <div className="flex items-center space-x-3">
                     {product.colors.map((color) => (
@@ -767,11 +804,11 @@ export default function Product({ product }) {
                       </RadioGroup.Option>
                     ))}
                   </div>
-                </RadioGroup> */}
+                </RadioGroup> 
               </div>
 
               {/* Size picker */}
-              {/* <div className="mt-8">
+               <div className="mt-8">
                 <div className="flex items-center justify-between">
                   <h2 className="text-sm font-medium text-gray-900">Size</h2>
                   <a href="#" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
@@ -803,7 +840,7 @@ export default function Product({ product }) {
                     ))}
                   </div>
                 </RadioGroup>
-              </div> */}
+              </div> 
 
               <button
                 onClick={() => addToCart(product.id)}
@@ -827,7 +864,9 @@ export default function Product({ product }) {
 
               <div className="prose prose-sm mt-4 text-gray-500">
                 <ul role="list">
-                  {/* <li key={}>{}</li> */}
+                  {product.details.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
                 </ul>
               </div>
             </div>

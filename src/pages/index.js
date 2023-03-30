@@ -2,19 +2,7 @@ import { Fragment, useState } from 'react'
 import Footer from '../../component/Footer'
 import { Header } from '../../component/Header'
 import Products from '../../component/Products'
-import { server } from '../../config'
 
-
-export const getStaticProps = async () =>{
-  const res = await fetch(`${server}/api/Products`)
-  const products = await res.json()
-
-  return {
-    props: {
-      products,
-    }
-  }
-}
 
 const collections = [
   {
@@ -79,7 +67,7 @@ export default function Index({products}) {
 
       <main>
         {/* Products */}
-        <Products products={products} />
+        <Products />
 
         {/* Featured section */}
         <section
